@@ -20,7 +20,7 @@ describe MoviesController do
       post :search_tmdb, {:search_terms=>'parkland'} 
     end
     it 'should redirect the user to homepage when no matching found' do
-      Movie.stub(:find_in_tmdb).and_return(nil)
+      Movie.stub(:find_in_tmdb).and_return([])
       post :search_tmdb, {:search_terms=>'parkland'} 
       flash[:notice].should be
       response.should redirect_to movies_path  
