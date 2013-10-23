@@ -17,12 +17,26 @@ class Movie < ActiveRecord::Base
        movies.each do |movie|
          h=Hash.new
          h[:title]=movie.title
-         h[:release_date]=movie.release_date,
-         h[:rating]=Movie.all_ratings[Random.rand(Movie.all_ratings.size)]
+         h[:release_date]=movie.release_date
+         h[:rating]=Movie.all_ratings[(movie.id.to_i)%(Movie.all_ratings.size)]
+         h[:tmdb_id]=movie.id
          result << h
        end
     end
     return result
   end 
   
+  def self.create_from_tmdb(args)
+    Tmdb::Api.key(self.api_key)
+    flag=false
+    args.each do |id|
+      movie = Tmdb::Movie.detail(id)
+      h=Hash.new
+      h[:title]=movie.title
+      h[:release_date]=movie.release_date
+      h[:rating]=Movie.all_ratings[(movie.id.to_i)%(Movie.all_ratings.size)]
+      if !!self.create(h) then flag=true end
+    end
+    return flag
+  end
 end

@@ -5,4 +5,7 @@ Rottenpotatoes::Application.routes.draw do
   
   # for search TMDb
   post 'movies/search_tmdb'
+  
+  # for add TMDb
+  post 'movies/add_tmdb'
 end
